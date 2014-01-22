@@ -1,0 +1,29 @@
+\name{FctMethod3}
+\alias{FctMethod3}
+\title{FctMethod3 function}
+\usage{
+  FctMethod3(d, e, qref, x1, x2, t1, t2)
+}
+\arguments{
+  \item{d}{Number of deaths.}
+
+  \item{e}{Exposure to risk.}
+
+  \item{qref}{Mortality rates in Reference Table.}
+
+  \item{x1}{Age range used for calculation.}
+
+  \item{x2}{Age range of reference table.}
+
+  \item{t1}{Calendar years used for the calculation. It
+  corresponds to the common years among observations and
+  the reference table.}
+
+  \item{t2}{Calendar years of the reference.}
+}
+\description{
+  FctMethod3() is an alternative to Method3(). It allows to
+  process the smoothing without using a "Data" object and
+  by defining all the needed parameters independently.
+}
+

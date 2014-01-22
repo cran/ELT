@@ -1,0 +1,28 @@
+\name{FctMethod4_1stPart}
+\alias{FctMethod4_1stPart}
+\title{FctMethod4_1stPart function}
+\usage{
+  FctMethod4_1stPart(d, e, qref, x1, x2, t1)
+}
+\arguments{
+  \item{d}{Number of deaths.}
+
+  \item{e}{Exposure to risk.}
+
+  \item{qref}{Mortality rates in Reference Table.}
+
+  \item{x1}{Age range used for calculation.}
+
+  \item{x2}{Age range of reference table.}
+
+  \item{t1}{Calendar years used for the calculation. It
+  corresponds to the common years among observations and
+  the reference table.}
+}
+\description{
+  FctMethod4_1stPart() is an alternative to Method4A(). It
+  allows to process the smoothing without using a "Data"
+  object and by defining all the needed parameters
+  independently.
+}
+

@@ -1,0 +1,42 @@
+\name{CompletionA}
+\alias{CompletionA}
+\title{CompletionA function}
+\usage{
+  CompletionA(OutputMethod, MyData, AgeRangeOptMale,
+    AgeRangeOptFemale, BegAgeCompMale, BegAgeCompFemale,
+    Color = MyData$Param$Color, ShowPlot = T)
+}
+\arguments{
+  \item{OutputMethod}{The list returned by one of these
+  functions : Method1(), Method2(), Method3() or
+  Method4B().}
+
+  \item{MyData}{The list returned by the add.Reference()
+  function.}
+
+  \item{AgeRangeOptMale}{Age range from which the optimal
+  starting age is selected for males}
+
+  \item{AgeRangeOptFemale}{Age range from which the optimal
+  starting age is selected for females}
+
+  \item{BegAgeCompMale}{For ages after BegAgeCompMale,
+  observed death probabilitiy is replaced by the model
+  output.}
+
+  \item{BegAgeCompFemale}{For ages after BegAgeCompFemale,
+  observed death probabilitiy is replaced by the model
+  output.}
+
+  \item{Color}{The color that will be used for the plots
+  (HTML notation).}
+
+  \item{ShowPlot}{If true, create graphics comparing
+  Before/After the completion create graphics of the
+  completed surfaces.}
+}
+\description{
+  This function executes the first part of table closure
+  using Denuit and Goderniaux (2005)
+}
+

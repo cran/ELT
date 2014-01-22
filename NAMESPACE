@@ -1,0 +1,6 @@
+import(locfit)
+import(lattice)
+import(latticeExtra)
+import(grid)
+import(xlsx)
+exportPattern("^[[:alpha:]]+") 

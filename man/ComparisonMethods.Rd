@@ -1,0 +1,53 @@
+\name{ComparisonMethods}
+\alias{ComparisonMethods}
+\title{ComparisonMethods function}
+\usage{
+  ComparisonMethods(ListOutputs, ListValidationLevel1,
+    ListValidationLevel2, ListValidationLevel3,
+    MyData = MyData, Plot = F,
+    ColorComp = c("#FF6590", "#309BFF", "#AD79FC", "#3CAB5F"),
+    LtyComp = rep(1, 4), AgeCrit)
+}
+\arguments{
+  \item{ListOutputs}{For the comparisons of n methods, a
+  list of n elements containing the returned value of the
+  functions Methodn().}
+
+  \item{ListValidationLevel1}{For the comparisons of n
+  methods, a list of n elements containing the returned
+  value of the function ValidationLevel1() for each of the
+  n methods.}
+
+  \item{ListValidationLevel2}{For the comparisons of n
+  methods, a list of n elements containing the returned
+  value of the function ValidationLevel2() for each of the
+  n methods.}
+
+  \item{ListValidationLevel3}{For the comparisons of n
+  methods, a list of n elements containing the returned
+  value of the function ValidationLevel3() for each of the
+  n methods.}
+
+  \item{MyData}{The list returned by the add.Reference()
+  function.}
+
+  \item{Plot}{If set to TRUE, a sub-directory will be
+  created in the working directory. This sub-directory will
+  contains png plots corresponding to the smoothed
+  surface.}
+
+  \item{ColorComp}{The color that will be used for the
+  plots (HTML notation). For the comparisons of n methods,
+  ColorComp is a vector of length n.}
+
+  \item{LtyComp}{Vector of parameters (length n) for the
+  lty plot parameter.}
+
+  \item{AgeCrit}{Age range for the comparison of adjusted
+  mortality and observed mortality.}
+}
+\description{
+  This function compares two or several methods using the
+  three groups of criteria from the validation process.
+}
+
