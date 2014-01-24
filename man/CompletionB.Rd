@@ -1,0 +1,29 @@
+\name{CompletionB}
+\alias{CompletionB}
+\title{CompletionB function}
+\usage{
+  CompletionB(ModCompletion, OutputMethod, MyData,
+    Color = MyData$Param$Color, Plot = F, Excel = F)
+}
+\arguments{
+  \item{ModCompletion}{Output of the function
+  CompletionA().}
+
+  \item{OutputMethod}{The list returned by one of these
+  functions : Method1(), Method2(), Method3() or
+  Method4B().}
+
+  \item{MyData}{The list returned by the add.Reference()
+  function.}
+
+  \item{Color}{The color that will be used for the plots
+  (HTML notation).}
+
+  \item{Plot}{If true, create graphics.}
+
+  \item{Excel}{If true, create Excel files.}
+}
+\description{
+  This function executes the second part of table closure
+}
+

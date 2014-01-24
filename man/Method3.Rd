@@ -1,0 +1,27 @@
+\name{Method3}
+\alias{Method3}
+\title{Method3 function}
+\usage{
+  Method3(MyData, AgeRange, Plot = F,
+    Color = MyData$Param$Color)
+}
+\arguments{
+  \item{MyData}{The list returned by the add.Reference()
+  function.}
+
+  \item{AgeRange}{Age range used for the calculation of the
+  parameters of the Poisson model.}
+
+  \item{Plot}{If set to TRUE, a sub-directory will be
+  created in the working directory. This sub-directory will
+  contains png plots corresponding to the smoothed
+  surface.}
+
+  \item{Color}{The color that will be used for the plots
+  (HTML notation).}
+}
+\description{
+  This function fits the Qxt using method 3 (Poisson GLM,
+  see reference).
+}
+

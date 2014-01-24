@@ -1,0 +1,35 @@
+\name{FctMethod4_2ndPart}
+\alias{FctMethod4_2ndPart}
+\title{FctMethod4_2ndPart function}
+\usage{
+  FctMethod4_2ndPart(d, e, qref, x1, x2, t1, t2, P.Opt,
+    h.Opt)
+}
+\arguments{
+  \item{d}{Number of deaths.}
+
+  \item{e}{Exposure to risk.}
+
+  \item{qref}{Mortality rates in Reference Table.}
+
+  \item{x1}{Age range used for calculation.}
+
+  \item{x2}{Age range of reference table.}
+
+  \item{t1}{Calendar years used for the calculation. It
+  corresponds to the common years among observations and
+  the reference table.}
+
+  \item{t2}{Calendar years of the reference table.}
+
+  \item{P.Opt}{Degree of approximation.}
+
+  \item{h.Opt}{Window width.}
+}
+\description{
+  FctMethod4_2ndPart() is an alternative to Method4B(). It
+  allows to process the smoothing without using a "Data"
+  object and by defining all the needed parameters
+  independently.
+}
+
