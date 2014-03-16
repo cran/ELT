@@ -89,7 +89,7 @@
 		Final <- cbind(min(AgeMethod):130, ModCompletion[[i]]$QxtFinal)
 #		Final <- as.data.frame(Final, col.names = c("Age", MyData[[i]]$YearRef))
 		Final <- as.data.frame(Final)
-		colnames(Final) <- c("Age", MyData[[i]]$YearRef)
+		colnames(Final) <- c("Age", colnames(ModCompletion[[i]]$QxtFinal))
 		NamesSheets <- names(getSheets(WorkBook))
 		if(length(NamesSheets[NamesSheets==paste(ModCompletion[[i]]$NameMethod, names(MyData)[i])])==1){
 			SheetFinal <- getSheets(WorkBook)[[paste(ModCompletion[[i]]$NameMethod, names(MyData)[i])]]

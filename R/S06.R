@@ -89,7 +89,7 @@ FctMethod4_2ndPart = function(d, e, qref, x1, x2, t1, t2, P.Opt, h.Opt){
 	Dx <- apply(as.matrix(d[x1 - min(as.numeric(rownames(d)))+1, ]), 1, sum)
 	DxRef <- apply(as.matrix(as.matrix(e[x1 - min(as.numeric(rownames(e))) + 1, ]) * VarphixtRef[x1 - min(x2) + 1, as.character(t1)]), 1, sum)
 	VarphixFitted <- predict(locfit(Dx ~ lp(x1, deg = P.Opt, nn = (h.Opt * 2 + 1) / length(x1), scale=1), ev = dat(), family = "poisson", link = "log", kern = c("epan"), weights = c(DxRef)))
-	QxtFitted <- 1-exp(- VarphixtRef[x1 - min(x2) + 1, ] * VarphixFitted)
+	QxtFitted <- 1-exp(- VarphixtRef[x1 - min(x2) + 1, as.character(min(t1):max(t2))] * VarphixFitted)
 	colnames(QxtFitted) <- as.character(min(t1):max(t2))
 	rownames(QxtFitted) <- x1
 	return(list(QxtFitted = QxtFitted, NameMethod = "Method4"))
