@@ -6,7 +6,7 @@
 ## ------------------------------------------------------------------------ ##
 ##  Script        S10.R                                                     ##
 ## ------------------------------------------------------------------------ ##
-##  Description   criterion assessing the plausibility and coherence of the  ##
+##  Description   Criteria assessing the plausibility and coherence of the  ##
 ##                mortality trends                                          ##
 ## ------------------------------------------------------------------------ ##
 ##  Authors       Tomas Julien, Frederic Planchet and Wassim Youssef        ##
@@ -184,7 +184,7 @@
 
 ValidationLevel3 = function(FinalMethod, MyData, Plot = F, Color = MyData$Param$Color, Excel = F){
 	AgeFinal <- as.numeric(rownames(FinalMethod[[1]]$QxtFinal))
-	print("Validation: Level 3 - criterion assessing the plausibility and coherence of the mortality trends...")
+	print("Validation: Level 3 - Criteria assessing the plausibility and coherence of the mortality trends...")
 	SI <- vector("list", length(MyData)-1)
 	names(SI) <- names(MyData)[1:(length(MyData)-1)]
 	for (i in 1 : (length(MyData)-1)){
@@ -230,7 +230,7 @@ ValidationLevel3 = function(FinalMethod, MyData, Plot = F, Color = MyData$Param$
 	YearObs <- range(colnames(MyData[[1]]$Deaths))
 	for (i in 1 : (length(MyData)-1)){	
 		PerLifeExpFitted[[i]] <- .FctPerLifeExp(FinalMethod[[i]]$QxtFinal, AgeFinal, max(AgeComp), MyData[[i]]$YearCom, MyData[[i]]$YearRef, FinalMethod[[i]]$NameMethod)
-		QObserved <- as.matrix((MyData[[i]]$Deaths/MyData[[i]]$Indi)[AgeComp+1, ])	
+		QObserved <- as.matrix((MyData[[i]]$Deaths/MyData[[i]]$Expo)[AgeComp+1, ])	
 		PerLifeExpObserved[[i]] <- .FctPerLifeExp(QObserved, AgeFinal, max(AgeComp) , YearObs[1], YearObs[2], FinalMethod[[i]]$NameMethod)$PerLifeExp
 		PerLifeExpComb[[i]] <- cbind(PerLifeExpObserved[[i]],PerLifeExpFitted[[i]]$PerLifeExp[,(length(MyData[[i]]$YearCom)+1):length(min(MyData[[i]]$YearCom):max(MyData[[i]]$YearRef))])
 		colnames(PerLifeExpComb[[i]]) <- as.character(c(colnames(MyData[[i]]$Deaths),(max(MyData[[i]]$YearCom)+1):max(MyData[[i]]$YearRef)))
@@ -264,4 +264,4 @@ ValidationLevel3 = function(FinalMethod, MyData, Plot = F, Color = MyData$Param$
 		}
 	}
 	return(list(SingleIndices = SI, CohortLifeExp5 = CohortLifeExp5, PerLifeExpFitted = PerLifeExpFitted, PerLifeExpObserved = PerLifeExpObserved, PerLifeExpComb = PerLifeExpComb))
-}		
+}

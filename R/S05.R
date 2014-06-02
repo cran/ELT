@@ -27,21 +27,19 @@
 
 
 FctMethod3 = function(d, e, qref, x1, x2, t1, t2){
-	VarphixtRef <- - log(1 - qref)
-	DB <- cbind(expand.grid(x1, t1), c(d[x1 - min(as.numeric(rownames(d))) + 1, ]), c(e[x1 - min(as.numeric(rownames(e))) + 1, ]), c(VarphixtRef[x1 - min(x2) + 1, as.character(t1)]))
+	DB <- cbind(expand.grid(x1, t1), c(d[x1 - min(as.numeric(rownames(d))) + 1, ]), c(e[x1 - min(as.numeric(rownames(e))) + 1, ]), c(qref[x1 - min(x2) + 1, as.character(t1)]))
 	colnames(DB) <-c("Age", "Year", "D_i", "E_i", "mu_i")
 	DimMat <- dim(qref[, as.character(min(t1) : max(t2))])
 	if(length(t1)<10){
 		PoisMod <- glm(D_i ~ as.numeric(log(mu_i)) + as.numeric(Age), family=poisson, data = data.frame(DB), offset = log(DB[,"E_i"])) 
-		VarphixtFitted <- matrix(exp(as.numeric(coef(PoisMod)[1]) + as.numeric(coef(PoisMod)[2]) * as.numeric(log(VarphixtRef[, as.character(min(t1) : max(t2))])) + (x2) * as.numeric(coef(PoisMod)[3])), DimMat[1], DimMat[2])
+		QxtFitted <- matrix(exp(as.numeric(coef(PoisMod)[1]) + as.numeric(coef(PoisMod)[2]) * as.numeric(log(qref[, as.character(min(t1) : max(t2))])) + (x2) * as.numeric(coef(PoisMod)[3])), DimMat[1], DimMat[2])
 	 }
 	 if(length(t1)>=10){
 	 	PoisMod <- glm(D_i ~ as.numeric(log(mu_i)) + as.numeric(Age) * as.numeric(Year), family = poisson,  data = data.frame(DB), offset = log(DB[,"E_i"]))
 	 	DataGrid <- expand.grid(x2, min(t1) : max(t2)) 
 		IntGrid <- matrix(DataGrid[, 1] * DataGrid[, 2], length(x2), length(min(t1) : max(t2)))
-	 	VarphixtFitted <- matrix(exp(as.numeric(coef(PoisMod)[1]) + as.numeric(coef(PoisMod)[2]) * as.numeric(log(VarphixtRef[, as.character(min(t1) : max(t2))])) + (DataGrid[,1]) * as.numeric(coef(PoisMod)[3]) + (DataGrid[,2]) * as.numeric(coef(PoisMod)[4]) + IntGrid * as.numeric(coef(PoisMod)[5])), DimMat[1], DimMat[2])
+	 	QxtFitted <- matrix(exp(as.numeric(coef(PoisMod)[1]) + as.numeric(coef(PoisMod)[2]) * as.numeric(log(qref[, as.character(min(t1) : max(t2))])) + (DataGrid[,1]) * as.numeric(coef(PoisMod)[3]) + (DataGrid[,2]) * as.numeric(coef(PoisMod)[4]) + IntGrid * as.numeric(coef(PoisMod)[5])), DimMat[1], DimMat[2])
 	 	}
-	QxtFitted <- 1-exp(-VarphixtFitted)
 	colnames(QxtFitted) <- as.character(min(t1) : max(t2))
 	rownames(QxtFitted) <- x2
 	return(list(PoisMod = PoisMod, QxtFitted = QxtFitted, NameMethod = "Method3"))

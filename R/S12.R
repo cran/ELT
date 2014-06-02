@@ -24,8 +24,6 @@
 ##  Comparison Level 1                                                      ##
 ## ------------------------------------------------------------------------ ##
 
-#TODO: Documenter les fonctions absentes de S00 mais presentes dans la note technique
-
 .CompLevel1 = function(ListValidationLevel1){
 	print("Comparison 1st Level of validation")
 	ColNames <- vector(,length(ListValidationLevel1))

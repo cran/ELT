@@ -6,7 +6,7 @@
 ## ------------------------------------------------------------------------ ##
 ##  Script        S09.R                                                     ##
 ## ------------------------------------------------------------------------ ##
-##  Description   criterion assessing the regularity of the fit              ##
+##  Description   Criteria assessing the regularity of the fit              ##
 ## ------------------------------------------------------------------------ ##
 ##  Authors       Tomas Julien, Frederic Planchet and Wassim Youssef        ##
 ##                julien.tomas@univ-lyon1.fr                                ##
@@ -74,7 +74,7 @@ colnames(RUNSTEST) <- colnames(SIGNTEST) <- NameMethod
 ## ------------------------------------------------------------------------ ##
 
 .GetCritLevel2 = function(OutputMethod, MyData, ValCrit, AgeCrit){
-	CritLevel2 <- .TestsLevel2(OutputMethod$QxtFitted, MyData$Dxt, MyData$Lxt, ValCrit, AgeCrit, as.character(MyData$YearCom), OutputMethod$NameMethod)
+	CritLevel2 <- .TestsLevel2(OutputMethod$QxtFitted, MyData$Dxt, MyData$Ext, ValCrit, AgeCrit, as.character(MyData$YearCom), OutputMethod$NameMethod)
 	return(CritLevel2)
 	}
 
@@ -84,11 +84,11 @@ colnames(RUNSTEST) <- colnames(SIGNTEST) <- NameMethod
 
 
 ValidationLevel2 = function(OutputMethod, MyData, ValCrit, AgeCrit, Excel = F){
-	print("Validation: Level 2 - criterion assessing the regularity of the fit ...")
+	print("Validation: Level 2 - Criteria assessing the regularity of the fit ...")
 	CritLevel2 <- vector("list", length(MyData)-1)
 	names(CritLevel2) <- names(MyData)[1:(length(MyData)-1)]
 	for (i in 1 : (length(MyData)-1)){
-		.WarningInvalidAge(MyData[[i]]$Dxt, MyData[[i]]$Lxt, AgeCrit, MyData[[i]]$AgeRef, MyData[[i]]$YearCom)
+		.WarningInvalidAge(MyData[[i]]$Dxt, MyData[[i]]$Ext, AgeCrit, MyData[[i]]$AgeRef, MyData[[i]]$YearCom)
 		print(paste("Tests & quantities for ",names(MyData)[i]," population ..."))
 		CritLevel2[[i]] <-.GetCritLevel2(OutputMethod[[i]], MyData[[i]], ValCrit, AgeCrit)
 		print(CritLevel2[[i]])

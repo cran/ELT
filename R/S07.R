@@ -167,7 +167,7 @@ CompletionB = function(ModCompletion, OutputMethod, MyData, Color = MyData$Param
 		print(paste("Create graphics comparing Before/After the completion for the years in common in .../", PathA," ...", sep=""))
 		for (i in 1 : (length(MyData)-1)){
 			for(j in MyData[[i]]$YearCom){
-				png(filename=paste(PathA,"/",OutputMethod[[i]]$NameMethod,"-.BeforeAfterCompletion-",j,"-",names(MyData)[i],".png",sep=""), width  = 2100, height = 2100, res=300, pointsize= 12)
+				png(filename=paste(PathA,"/",OutputMethod[[i]]$NameMethod,"-BeforeAfterCompletion-",j,"-",names(MyData)[i],".png",sep=""), width  = 2100, height = 2100, res=300, pointsize= 12)
 				.BeforeAfterCompletion(ModCompletion[[i]], OutputMethod[[i]], MyData[[i]], Age, names(MyData)[i], Color, j)
 				dev.off()
 			}

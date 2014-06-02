@@ -12,8 +12,8 @@ Collection of functions that can be used following a pre-established procedure t
 \tabular{ll}{
 Package: \tab ELT\cr
 Type: \tab Package\cr
-Version: \tab 1.1\cr
-Date: \tab 2014-03-16\cr
+Version: \tab 1.2\cr
+Date: \tab 2014-05-30\cr
 License: \tab GNU\cr
 Depends: \tab locfit,lattice,latticeExtra,grid,xlsx\cr
 }
@@ -345,7 +345,7 @@ OutputMethod4PartOne <- Method4A(MyData = MyData, AgeRange = AgeRange, AgeCrit =
 
 ## ---------- Execute method 4 second part.
 
-OutputMethod4 <- Method4B(PartOne = OutputMethod4PartOne, MyData = MyData, OptMale = c(1, 16),
+OutputMethod4 <- Method4B(PartOne, MyData = MyData, OptMale = c(1, 16),
  OptFemale = c(1, 14), Plot = T)
 
 ## ------------------------------------------------------------------------ ##

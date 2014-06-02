@@ -26,6 +26,7 @@
 
 
 
+
 SurfacePlot = function(xx, zexpr, mainexpr, axis, cc){
 	XMat <- matrix(xx, nrow(xx), ncol(xx))
 	if(ncol(XMat) < 10){ByNber = 1} else {ByNber = 5}
@@ -54,10 +55,10 @@ SurfacePlot = function(xx, zexpr, mainexpr, axis, cc){
 		print(SurfacePlot(as.matrix(MyData[[i]]$Deaths),expression(D[xt]), paste("Number of deaths,",names(MyData)[i],"pop."), c(0,120,YearBeg,YearEnd), Color))
 		dev.off()
 		png(filename=paste(Path,"/Proba",names(MyData)[i],".png", sep=""), width  = 2100, height = 2100, res=300, pointsize= 12)
-		print(SurfacePlot(as.matrix(MyData[[i]]$Deaths/MyData[[i]]$Indi),expression(q[xt]), paste("Probability of death,",names(MyData)[i],"pop."), c(0,120,YearBeg,YearEnd), Color))
+		print(SurfacePlot(as.matrix(MyData[[i]]$Deaths/MyData[[i]]$Expo),expression(q[xt]), paste("Probability of death,",names(MyData)[i],"pop."), c(0,120,YearBeg,YearEnd), Color))
 		dev.off()
 		png(filename=paste(Path,"/LogProba",names(MyData)[i],".png", sep=""), width  = 2100, height = 2100, res=300, pointsize= 12)
-		print(SurfacePlot(as.matrix(log(MyData[[i]]$Deaths/MyData[[i]]$Indi)),expression(paste("log ",q[xt])), paste("Probability of death,",names(MyData)[i],"pop. (Log)"), c(0,120,YearBeg,YearEnd), Color))
+		print(SurfacePlot(as.matrix(log(MyData[[i]]$Deaths/MyData[[i]]$Expo)),expression(paste("log ",q[xt])), paste("Probability of death,",names(MyData)[i],"pop. (Log)"), c(0,120,YearBeg,YearEnd), Color))
 		dev.off()
 		}
 	}
@@ -116,9 +117,9 @@ trellis.unfocus()
 ## ------------------------------------------------------------------------ ##	
 .BeforeAfterCompletion = function(ModCompletion, OutputMethod, MyData, Age, Pop, Color, j){
 	AgeObs <- (min(Age) - min(MyData$AgeRef) + 1) : nrow(MyData$Dxt)	
-	LimMin <- min((log(MyData$Dxt/MyData$Lxt)[AgeObs,as.character(j)])[log(MyData$Dxt/MyData$Lxt)[AgeObs,as.character(j)] != -Inf], (log(OutputMethod$QxtFitted[,as.character(j)]))[log(OutputMethod$QxtFitted[,as.character(j)]) != -Inf],(log(ModCompletion$QxtFinal[,as.character(j)]))[log(ModCompletion$QxtFinal[,as.character(j)]) != -Inf] ,na.rm=T)
-	LimMax <-  max((log(MyData$Dxt/MyData$Lxt)[AgeObs,as.character(j)])[log(MyData$Dxt/MyData$Lxt)[AgeObs,as.character(j)] != Inf], (log(OutputMethod$QxtFitted[,as.character(j)]))[log(OutputMethod$QxtFitted[,as.character(j)]) != Inf],(log(ModCompletion$QxtFinal[,as.character(j)]))[log(ModCompletion$QxtFinal[,as.character(j)]) != Inf],na.rm=T)
-	print(plot(min(Age):130,c(log(MyData$Dxt/MyData$Lxt)[AgeObs,as.character(j)],rep(NA,10)), ylim=c(LimMin,LimMax), type="p", pch=16, xlab="Age", ylab=expression(paste("log ",q[xt])), main=paste("Before/After Completion -", ModCompletion$NameMethod, "- Year",j,"-",Pop ,"pop.")))
+	LimMin <- min((log(MyData$Dxt/MyData$Ext)[AgeObs,as.character(j)])[log(MyData$Dxt/MyData$Ext)[AgeObs,as.character(j)] != -Inf], (log(OutputMethod$QxtFitted[,as.character(j)]))[log(OutputMethod$QxtFitted[,as.character(j)]) != -Inf],(log(ModCompletion$QxtFinal[,as.character(j)]))[log(ModCompletion$QxtFinal[,as.character(j)]) != -Inf] ,na.rm=T)
+	LimMax <-  max((log(MyData$Dxt/MyData$Ext)[AgeObs,as.character(j)])[log(MyData$Dxt/MyData$Ext)[AgeObs,as.character(j)] != Inf], (log(OutputMethod$QxtFitted[,as.character(j)]))[log(OutputMethod$QxtFitted[,as.character(j)]) != Inf],(log(ModCompletion$QxtFinal[,as.character(j)]))[log(ModCompletion$QxtFinal[,as.character(j)]) != Inf],na.rm=T)
+	print(plot(min(Age):130,c(log(MyData$Dxt/MyData$Ext)[AgeObs,as.character(j)],rep(NA,10)), ylim=c(LimMin,LimMax), type="p", pch=16, xlab="Age", ylab=expression(paste("log ",q[xt])), main=paste("Before/After Completion -", ModCompletion$NameMethod, "- Year",j,"-",Pop ,"pop.")))
 	print(points(min(Age):(length(OutputMethod$QxtFitted[,as.character(j)])+min(Age)-1),log(OutputMethod$QxtFitted[,as.character(j)]),col=Color, type="l", lwd=2, lty=3))
 	print(points(min(Age):130,log(ModCompletion$QxtFinal[,as.character(j)]),col=Color, type="l", lwd=2))
 	legend(x=35,y=0,legend=c("Observations", "Before Completion","After Completion"), col=c("black",Color,Color), lty=c(NA,3,1),lwd=c(NA,2,2),pch=c(16,NA,NA), cex=.8, box.col="transparent")
@@ -132,11 +133,11 @@ trellis.unfocus()
 	AgeObs <- (min(Age) - min(MyData[[1]]$AgeRef) + 1) : nrow(MyData[[1]]$Dxt)
 	LimMin <- vector(,2)
 	for(i in 1:2){
-		LimMin[i] <- min((log(MyData[[i]]$Dxt/MyData[[i]]$Lxt)[AgeObs,as.character(j)])[log(MyData[[i]]$Dxt/MyData[[i]]$Lxt)[AgeObs,as.character(j)] != -Inf],(log(ModCompletion[[i]]$QxtFinal[,as.character(j)]))[log(ModCompletion[[i]]$QxtFinal[,as.character(j)]) != -Inf] ,na.rm=T)
+		LimMin[i] <- min((log(MyData[[i]]$Dxt/MyData[[i]]$Ext)[AgeObs,as.character(j)])[log(MyData[[i]]$Dxt/MyData[[i]]$Ext)[AgeObs,as.character(j)] != -Inf],(log(ModCompletion[[i]]$QxtFinal[,as.character(j)]))[log(ModCompletion[[i]]$QxtFinal[,as.character(j)]) != -Inf] ,na.rm=T)
 		}
 	Lmin <- min(LimMin)
-	print(plot(min(Age):130,c(log(MyData[[2]]$Dxt/MyData[[2]]$Lxt)[AgeObs,as.character(j)],rep(NA,10)), ylim=c(Lmin,0.1), type="p", pch=16, xlab="Age", ylab=expression(paste("log ",q[xt])), main=paste("Fits after Completion -", ModCompletion[[1]]$NameMethod, "- Year",j)))
-	print(points(min(Age):130,c(log(MyData[[1]]$Dxt/MyData[[1]]$Lxt)[AgeObs,as.character(j)],rep(NA,10)), type="p", pch=1))
+	print(plot(min(Age):130,c(log(MyData[[2]]$Dxt/MyData[[2]]$Ext)[AgeObs,as.character(j)],rep(NA,10)), ylim=c(Lmin,0.1), type="p", pch=16, xlab="Age", ylab=expression(paste("log ",q[xt])), main=paste("Fits after Completion -", ModCompletion[[1]]$NameMethod, "- Year",j)))
+	print(points(min(Age):130,c(log(MyData[[1]]$Dxt/MyData[[1]]$Ext)[AgeObs,as.character(j)],rep(NA,10)), type="p", pch=1))
 	print(points(min(Age):130,log(ModCompletion[[2]]$QxtFinal[,as.character(j)]),col=Color, type="l", lwd=2))
 	print(points(min(Age):130,log(ModCompletion[[1]]$QxtFinal[,as.character(j)]),col=Color, type="l", lwd=2, lty=3))
 	legend(x=35,y=0,legend=c(paste("Observations", names(MyData)[2]), paste("Observations", names(MyData)[1]), paste("Fit", names(MyData)[2]),paste("Fit", names(MyData)[1])), col=c(1,1,Color,Color), lty=c(NA,NA,1,3),lwd=c(NA,NA,2,2),pch=c(16,1,NA,NA), box.col="transparent",cex=.8)
@@ -192,7 +193,7 @@ text = list(lab = NameObs), draw=TRUE))
 pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"),
                  width = unit(1, "grobwidth", k1), 
                  height = unit(1, "grobheight", k1), 
-                 just = c("left", "bottom")))
+                 just=c("left", "bottom")))
                  grid.draw(k1);
 	 }
 
@@ -209,7 +210,7 @@ pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"),
 	dat <- as.data.frame(cbind(c(xx), grp1))
 	zzz <- with(dat, xyplot(c(xx) ~ rep(AgeVec, length(gr)) | as.factor(grp1), 
 	data = dat, layout = c(1,1), as.table = T, xlab = 'Age',
-	ylab = expression(widehat(q)[xt]), type= "n", scales = list(x = list(alternating = 1, tck = c(1,0),
+	ylab = expression(widetilde(q)[xt]), type= "n", scales = list(x = list(alternating = 1, tck = c(1,0),
 	at = seq(min(AgeVec),max(AgeVec)+1,10), labels = seq(min(AgeVec),max(AgeVec)+1,10)), y = list(alternating = 3, 
 	tck = c(1,1), limits= LimitY)), par.settings = list(fontsize = list(text = 15, points = 7)),
 	between=list(y = 0.6, x = 0.6), par.strip.text = list(cex = 1, lines = 1.1),
@@ -220,14 +221,14 @@ pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"),
 	panel.points(AgeVec, x[AgeVec+1-min(as.numeric(rownames(x))),yy], type="l", col=ColVec, lty = 1)
 	trellis.unfocus()
 	k1 <- draw.key(list(lines = list( type = c("p","l"), pch=16, col = c(1,ColVec), lty = 1), cex = .9, text = list(lab = c("Observations", NameMethod)), draw=TRUE))
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just = c("left", "bottom")))	
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
 	grid.draw(k1)
 	}
 
 .PlotFittedYear = function(OutputMethod, MyData, AgeCrit, Color, j, pop){
-	LimMin <- min(((MyData$Dxt/MyData$Lxt)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)])[(MyData$Dxt/MyData$Lxt)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)] != -Inf], (OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)])[OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)] != -Inf],na.rm=T)
-	LimMax <-  max(((MyData$Dxt/MyData$Lxt)[AgeCrit-min(MyData$AgeRef)+1,as.character(j)])[(MyData$Dxt/MyData$Lxt)[AgeCrit-min(MyData$AgeRef)+1,as.character(j)] != Inf], (OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)])[OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)] != Inf],na.rm=T)
-	print(.CompFittedyear(OutputMethod$QxtFitted, MyData$Dxt/MyData$Lxt, j , c(55,140), Color, AgeCrit, MyData$AgeRef, c(LimMin-0.01,LimMax+0.015), pop, OutputMethod$NameMethod))
+	LimMin <- min(((MyData$Dxt/MyData$Ext)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)])[(MyData$Dxt/MyData$Ext)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)] != -Inf], (OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)])[OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)] != -Inf],na.rm=T)
+	LimMax <-  max(((MyData$Dxt/MyData$Ext)[AgeCrit-min(MyData$AgeRef)+1,as.character(j)])[(MyData$Dxt/MyData$Ext)[AgeCrit-min(MyData$AgeRef)+1,as.character(j)] != Inf], (OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)])[OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)] != Inf],na.rm=T)
+	print(.CompFittedyear(OutputMethod$QxtFitted, MyData$Dxt/MyData$Ext, j , c(55,140), Color, AgeCrit, MyData$AgeRef, c(LimMin-0.01,LimMax+0.015), pop, OutputMethod$NameMethod))
 	}
 
 ## ------------------------------------------------------------------------ ##
@@ -242,7 +243,7 @@ pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"),
 	dat <- as.data.frame(cbind(c(xx), grp1))
 	zzz <- with(dat, xyplot(c(xx) ~ rep(AgeVec, length(gr)) | as.factor(grp1), 
 	data = dat, layout = c(1,1), as.table = T, xlab = 'Age',
-	ylab = expression(paste("log ",widehat(q)[xt])), type= "n", scales = list(x = list(alternating = 1, tck = c(1,0),
+	ylab = expression(paste("log ",widetilde(q)[xt])), type= "n", scales = list(x = list(alternating = 1, tck = c(1,0),
 	at = seq(min(AgeVec),max(AgeVec)+1,10), labels = seq(min(AgeVec),max(AgeVec)+1,10)), y = list(alternating = 3, 
 	tck = c(1,1), limits= LimitY)), par.settings = list(fontsize = list(text = 15, points = 7)),
 	between=list(y = 0.6, x = 0.6), par.strip.text = list(cex = 1, lines = 1.1),
@@ -253,14 +254,14 @@ pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"),
 	panel.points(AgeVec, log(x[AgeVec+1-min(as.numeric(rownames(x))),yy]), type="l", col=ColVec, lty = 1)
 	trellis.unfocus()
 k1 <- draw.key(list(lines = list( type = c("p","l"), pch=16, col = c(1,ColVec), lty = 1), cex = .9, text = list(lab = c("Observations", NameMethod)), draw=TRUE))
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just = c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
 	grid.draw(k1)
 	}
 
 .PlotFittedYearLog = function(OutputMethod, MyData, AgeCrit, Color, j, pop){
-	LimMin <- min((log(MyData$Dxt/MyData$Lxt)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)])[log(MyData$Dxt/MyData$Lxt)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)] != -Inf], log((OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)]))[log(OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)]) != -Inf],na.rm=T)
-	LimMax <-  max((log(MyData$Dxt/MyData$Lxt)[AgeCrit-min(MyData$AgeRef)+1,as.character(j)])[log(MyData$Dxt/MyData$Lxt)[AgeCrit-min(MyData$AgeRef)+1,as.character(j)] != Inf], log((OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)]))[log(OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)]) != Inf],na.rm=T)	
-	print(.CompFittedyearLog(OutputMethod$QxtFitted, MyData$Dxt/MyData$Lxt, j , c(55,140), Color, AgeCrit, MyData$AgeRef, c(LimMin-0.15,LimMax+0.15), pop,OutputMethod$NameMethod))
+	LimMin <- min((log(MyData$Dxt/MyData$Ext)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)])[log(MyData$Dxt/MyData$Ext)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)] != -Inf], log((OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)]))[log(OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)]) != -Inf],na.rm=T)
+	LimMax <-  max((log(MyData$Dxt/MyData$Ext)[AgeCrit-min(MyData$AgeRef)+1,as.character(j)])[log(MyData$Dxt/MyData$Ext)[AgeCrit-min(MyData$AgeRef)+1,as.character(j)] != Inf], log((OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)]))[log(OutputMethod$QxtFitted[AgeCrit-min(as.numeric(rownames(OutputMethod$QxtFitted)))+1,as.character(j)]) != Inf],na.rm=T)	
+	print(.CompFittedyearLog(OutputMethod$QxtFitted, MyData$Dxt/MyData$Ext, j , c(55,140), Color, AgeCrit, MyData$AgeRef, c(LimMin-0.15,LimMax+0.15), pop,OutputMethod$NameMethod))
 	}
 
 ## ------------------------------------------------------------------------ ##
@@ -332,7 +333,7 @@ print(useOuterStrips(zzz,
 	dat <- as.data.frame(cbind(c(xx), grp1))
 	zzz <- with(dat, xyplot(c(xx) ~ rep(AgeVec, length(gr)) | as.factor(grp1), 
 	data = dat, layout = c(1,1), as.table = T, xlab = 'Age',
-	ylab = expression(widehat(D)[xt]), type= "n", scales = list(x = list(alternating = 1, tck = c(1,0),
+	ylab = expression(widetilde(D)[xt]), type= "n", scales = list(x = list(alternating = 1, tck = c(1,0),
 	at = seq(min(AgeVec),max(AgeVec)+1,10), labels = seq(min(AgeVec),max(AgeVec)+1,10)), y = list(alternating = 3, 
 	tck = c(1,1), limits= c(-1,max(unlist(d$DIntUp))+1))), par.settings = list(fontsize = list(text = 15, points = 7)),
 	between=list(y = 0.6, x = 0.6), par.strip.text = list(cex = 1, lines = 1.1),
@@ -345,7 +346,7 @@ print(useOuterStrips(zzz,
 		panel.points(AgeVec, d$DIntLow[AgeVec+1-min(as.numeric(rownames(d$DIntLow))),yy], type="l", col=ColVec, lty = 3)
 	trellis.unfocus()
 k1 <- draw.key(list(lines = list( type = c("p","l"), pch=16, col = c(1,ColVec), lty = 1), cex = .9, text = list(lab = c("Observations", d$NameMethod)), draw=TRUE))
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just = c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
 	grid.draw(k1)
 	}
 
@@ -372,7 +373,7 @@ k1 <- draw.key(list(lines = list( type = c("p","l"), pch=16, col = c(1,ColVec), 
 	trellis.unfocus()
 k1 <- draw.key(list(lines = list( type = c("b","l"), pch=16, col = c(1,col.vec), lty = c(2,1)), cex = .9, text = list(lab = c("Observations", leg.vec)), draw=TRUE))
 
-pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just = c("left", "bottom")))
+pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
 
 grid.draw(k1) }
 
@@ -390,7 +391,7 @@ grid.draw(k1) }
 		Lim <- c(list(c(min(unlist(q2[[1]])),.15)))
 		}	
 	aa <- x1+1-min(x1)
-	qq <- (MyData[[1]]$Dxt/MyData[[1]]$Lxt)[x1+1-min(MyData[[1]]$AgeRef),as.character(yy)]
+	qq <- (MyData[[1]]$Dxt/MyData[[1]]$Ext)[x1+1-min(MyData[[1]]$AgeRef),as.character(yy)]
 	MAT.A <- c(rep(q1[[1]]$QxtFinal[aa,as.character(yy)], length(pop)))
 	VEC.A <- c(MAT.A)
 	grp1 <- rep(pop, each = length(aa))
@@ -403,7 +404,7 @@ type = "n", xlab = 'Age', ylab = "", layout=LayOut, par.settings = list(fontsize
     trellis.focus("panel", i, 1, highlight = FALSE)
        for (k in 1:nsim) {
 		panel.points(x1, q2[[i]][[k]][aa,as.character(yy)],type="l",col=Color) }
-		panel.points(x1, (MyData[[i]]$Dxt/MyData[[i]]$Lxt)[x1+1-min(MyData[[i]]$AgeRef),as.character(yy)],type="p",col=1, pch=16)
+		panel.points(x1, (MyData[[i]]$Dxt/MyData[[i]]$Ext)[x1+1-min(MyData[[i]]$AgeRef),as.character(yy)],type="p",col=1, pch=16)
 		panel.points(x1, q1[[i]]$QxtFinal[aa,as.character(yy)],type="l",col=1, lwd=2)
     trellis.unfocus()
 		}
@@ -486,7 +487,7 @@ type = "n", xlab = 'Age', ylab = "", layout=LayOut, par.settings = list(fontsize
 		trellis.unfocus()
 		k1 <- draw.key(list(lines = list( type = "b", pch=ppp, col = cc, lty = 2, cex=1.5), cex = 1.1, text = list(lab = paste("Age", av)), draw=TRUE))
 
-pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just = c("left", "bottom")))
+pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
 
 grid.draw(k1) }
 
@@ -528,9 +529,9 @@ grid.draw(k1) }
 	for(i in 1:length(QxtFittedList)){
 		QxtFittedMethods[[i]] <- QxtFittedList[[i]][AgeCrit - min(as.numeric(rownames(QxtFittedList[[i]]))) + 1, as.character(j)]
 	}
-	LimMin <- min(((MyData$Dxt/MyData$Lxt)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)])[(MyData$Dxt/MyData$Lxt)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)] != -Inf], (unlist(QxtFittedMethods))[(unlist(QxtFittedMethods)) != -Inf],na.rm=T)
-	LimMax <-  max(((MyData$Dxt/MyData$Lxt)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)])[(MyData$Dxt/MyData$Lxt)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)] != -Inf], (unlist(QxtFittedMethods))[(unlist(QxtFittedMethods))!= -Inf],na.rm=T)	
-	print(.CompMethodsByYears(QxtFittedList, MyData$Dxt/MyData$Lxt, j , c(55,140), ColVec, LtyVec, NamesOfMethods, AgeCrit, MyData$AgeRef, c(LimMin-0.01,LimMax+0.02), pop))
+	LimMin <- min(((MyData$Dxt/MyData$Ext)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)])[(MyData$Dxt/MyData$Ext)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)] != -Inf], (unlist(QxtFittedMethods))[(unlist(QxtFittedMethods)) != -Inf],na.rm=T)
+	LimMax <-  max(((MyData$Dxt/MyData$Ext)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)])[(MyData$Dxt/MyData$Ext)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)] != -Inf], (unlist(QxtFittedMethods))[(unlist(QxtFittedMethods))!= -Inf],na.rm=T)	
+	print(.CompMethodsByYears(QxtFittedList, MyData$Dxt/MyData$Ext, j , c(55,140), ColVec, LtyVec, NamesOfMethods, AgeCrit, MyData$AgeRef, c(LimMin-0.01,LimMax+0.02), pop))
 	}
 
 .CompMethodsByYears = function(x, obs, yy ,k, col.vec, lty.vec, leg.vec, AgeCrit, ageref, lly, pop) {
@@ -539,7 +540,7 @@ grid.draw(k1) }
 	xx <- log(obs[AgeCrit+1-min(ageref), yy])
 	nn <- length(c(xx)); gr <- 1; grp1 <- as.factor(rep(gr, nn))
 	dat <- as.data.frame(cbind(c(xx), grp1))
-	zzz <- with(dat, xyplot(c(xx) ~ rep(AgeCrit, length(gr)) | as.factor(grp1), data = dat, layout = c(1,1), as.table = T, xlab = 'Age', ylab = expression(widehat(q)[xt]), type= "n", scales = list(x = list(alternating = 1, tck = c(1,0), at = seq(min(AgeCrit),max(AgeCrit)+1,10), labels = seq(min(AgeCrit),max(AgeCrit)+1,10)), y = list(alternating = 3, tck = c(1,1), limits= lly)), par.settings = list(fontsize = list(text = 15, points = 7)), between=list(y = 0.6, x = 0.6), par.strip.text = list(cex = 1, lines = 1.1), strip = strip.custom(which.given = 1, factor.levels = expr, bg = "lightgrey")))
+	zzz <- with(dat, xyplot(c(xx) ~ rep(AgeCrit, length(gr)) | as.factor(grp1), data = dat, layout = c(1,1), as.table = T, xlab = 'Age', ylab = expression(widetilde(q)[xt]), type= "n", scales = list(x = list(alternating = 1, tck = c(1,0), at = seq(min(AgeCrit),max(AgeCrit)+1,10), labels = seq(min(AgeCrit),max(AgeCrit)+1,10)), y = list(alternating = 3, tck = c(1,1), limits= lly)), par.settings = list(fontsize = list(text = 15, points = 7)), between=list(y = 0.6, x = 0.6), par.strip.text = list(cex = 1, lines = 1.1), strip = strip.custom(which.given = 1, factor.levels = expr, bg = "lightgrey")))
 	print(zzz)
 	trellis.focus("panel", 1, 1, highlight = FALSE)
 	panel.points(AgeCrit, obs[AgeCrit+1-min(ageref), yy], type="p", col=1, pch=16)
@@ -548,7 +549,7 @@ grid.draw(k1) }
 		}
 	trellis.unfocus()
 	k1 <- draw.key(list(lines = list( type = c("p",rep("l",length(x))), pch=16, col = c(1,col.vec), lty = c(NA,lty.vec)), cex = .9, text = list(lab = c("Observations", leg.vec)), draw=TRUE))
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just = c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
 	grid.draw(k1)
 	}
 
@@ -591,9 +592,9 @@ grid.draw(k1) }
 	for(i in 1:length(QxtFittedList)){
 		QxtFittedMethods[[i]] <- QxtFittedList[[i]][AgeCrit - min(as.numeric(rownames(QxtFittedList[[i]]))) + 1, as.character(j)]
 	}
-	LimMin <- min((log(MyData$Dxt/MyData$Lxt)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)])[log(MyData$Dxt/MyData$Lxt)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)] != -Inf], log(unlist(QxtFittedMethods))[log(unlist(QxtFittedMethods)) != -Inf],na.rm=T)
-	LimMax <-  max((log(MyData$Dxt/MyData$Lxt)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)])[log(MyData$Dxt/MyData$Lxt)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)] != -Inf], log(unlist(QxtFittedMethods))[log(unlist(QxtFittedMethods))!= -Inf],na.rm=T)	
-	print(.CompMethodsByYearsLog(QxtFittedList, MyData$Dxt/MyData$Lxt, j , c(55,140), ColVec, LtyVec, NamesOfMethods, AgeCrit, MyData$AgeRef, c(LimMin-0.15,LimMax+0.15), pop))
+	LimMin <- min((log(MyData$Dxt/MyData$Ext)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)])[log(MyData$Dxt/MyData$Ext)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)] != -Inf], log(unlist(QxtFittedMethods))[log(unlist(QxtFittedMethods)) != -Inf],na.rm=T)
+	LimMax <-  max((log(MyData$Dxt/MyData$Ext)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)])[log(MyData$Dxt/MyData$Ext)[AgeCrit - min(MyData$AgeRef)+1,as.character(j)] != -Inf], log(unlist(QxtFittedMethods))[log(unlist(QxtFittedMethods))!= -Inf],na.rm=T)	
+	print(.CompMethodsByYearsLog(QxtFittedList, MyData$Dxt/MyData$Ext, j , c(55,140), ColVec, LtyVec, NamesOfMethods, AgeCrit, MyData$AgeRef, c(LimMin-0.15,LimMax+0.15), pop))
 	}
 
 .CompMethodsByYearsLog = function(x, obs, yy ,k, col.vec, lty.vec, leg.vec, AgeCrit, ageref, lly, pop) {
@@ -602,7 +603,7 @@ grid.draw(k1) }
 	xx <- log(obs[AgeCrit+1-min(ageref), yy])
 	nn <- length(c(xx)); gr <- 1; grp1 <- as.factor(rep(gr, nn))
 	dat <- as.data.frame(cbind(c(xx), grp1))
-	zzz <- with(dat, xyplot(c(xx) ~ rep(AgeCrit, length(gr)) | as.factor(grp1), data = dat, layout = c(1,1), as.table = T, xlab = 'Age', ylab = expression(paste("log ",widehat(q)[xt])), type= "n", scales = list(x = list(alternating = 1, tck = c(1,0), at = seq(min(AgeCrit),max(AgeCrit)+1,10), labels = seq(min(AgeCrit),max(AgeCrit)+1,10)), y = list(alternating = 3, tck = c(1,1), limits= lly)), par.settings = list(fontsize = list(text = 15, points = 7)), between=list(y = 0.6, x = 0.6), par.strip.text = list(cex = 1, lines = 1.1), strip = strip.custom(which.given = 1, factor.levels = expr, bg ="lightgrey")))
+	zzz <- with(dat, xyplot(c(xx) ~ rep(AgeCrit, length(gr)) | as.factor(grp1), data = dat, layout = c(1,1), as.table = T, xlab = 'Age', ylab = expression(paste("log ", widetilde(q)[xt])), type= "n", scales = list(x = list(alternating = 1, tck = c(1,0), at = seq(min(AgeCrit),max(AgeCrit)+1,10), labels = seq(min(AgeCrit),max(AgeCrit)+1,10)), y = list(alternating = 3, tck = c(1,1), limits= lly)), par.settings = list(fontsize = list(text = 15, points = 7)), between=list(y = 0.6, x = 0.6), par.strip.text = list(cex = 1, lines = 1.1), strip = strip.custom(which.given = 1, factor.levels = expr, bg ="lightgrey")))
 	print(zzz)
 	trellis.focus("panel", 1, 1, highlight = FALSE)
 	panel.points(AgeCrit, log(obs[AgeCrit+1-min(ageref), yy]), type="p", col=1, pch=16)
@@ -611,7 +612,7 @@ grid.draw(k1) }
 		}
 	trellis.unfocus()
 	k1 <- draw.key(list(lines = list( type = c("p",rep("l",length(x))), pch=16, col = c(1,col.vec), lty = c(NA, lty.vec)), cex = .9, text = list(lab = c("Observations", leg.vec)), draw=TRUE))
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just = c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
 	grid.draw(k1)
 	}
 
@@ -742,7 +743,7 @@ x = list(relation = "same", alternating = 1, tck = c(1,0), at = seq(min(xx),max(
 	dat <- as.data.frame(cbind(c(x[[1]]), grp1))
 	zzz <- with(dat, xyplot(c(x[[1]]) ~ rep(age.vec, length(gr)) | as.factor(grp1), 
 	data = dat, layout = c(1,1), as.table = T, xlab = 'Age',
-	ylab = expression(widehat(D)[xt]), type= "n", scales = list(x = list(alternating = 1, tck = c(1,0),
+	ylab = expression(widetilde(D)[xt]), type= "n", scales = list(x = list(alternating = 1, tck = c(1,0),
 	at = seq(min(age.vec),max(age.vec)+1,10), labels = seq(min(age.vec),max(age.vec)+1,10)), y = list(alternating = 3, 
 	tck = c(1,1), limits= Lim)), par.settings = list(fontsize = list(text = 15, points = 7)),
 	between=list(y = 0.6, x = 0.6), par.strip.text = list(cex = 1, lines = 1.1),
@@ -766,7 +767,7 @@ x = list(relation = "same", alternating = 1, tck = c(1,0), at = seq(min(xx),max(
 		}
 	trellis.unfocus()
 	k1 <- draw.key(list(lines = list( type = c("p",rep("l",length(x))), pch=16, col = c(1,col.vec), lty = c(NA, lty.vec)), cex = .9, text = list(lab = c("Observations", leg.vec)), draw=TRUE)) }
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just = c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
 	grid.draw(k1) 
 	}
 
@@ -852,6 +853,6 @@ x = list(relation = "same", alternating = 1, tck = c(1,0), at = seq(min(xx),max(
 	trellis.unfocus()
 	k1 <- draw.key(list(lines = list( type = c("b",rep("l",length(x2))), pch=16, col = c(gray(.5),col.vec), lty = c(2,lty.vec)), cex = .9, text = list(lab = c("Observations", leg.vec)), draw=TRUE))
 	}
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just = c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
 	grid.draw(k1)
 	}

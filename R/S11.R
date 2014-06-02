@@ -25,10 +25,10 @@
 ##  Simualtion des décès                                                    ##
 ## ------------------------------------------------------------------------ ##
 
-.SimDxt = function(q, l, x1, x2, t1, nsim){
+.SimDxt = function(q, e, x1, x2, t1, nsim){
 	DxtSim <- vector("list", nsim)
 	for(i in 1:nsim){
-		DxtSim[[i]] <- matrix(rbinom(length(x1) * length(t1), round(l[x1+1-min(x2),as.character(t1)]), q[x1+1-min(as.numeric(rownames(q))),as.character(t1)]), length(x1), length(t1))
+		DxtSim[[i]] <- matrix(rpois(length(x1) * length(t1), e[x1+1-min(x2),as.character(t1)] * q[x1+1-min(as.numeric(rownames(q))),as.character(t1)]), length(x1), length(t1))
 	colnames(DxtSim[[i]]) <- t1; rownames(DxtSim[[i]]) <- x1
 		}
 	return(DxtSim)
@@ -125,11 +125,11 @@
 	for(i in 1:NbSim){
 ## ---------- If Method 1
 		if(NameMethod == "Method1"){
-			QxtFittedSim[[i]] <- FctMethod1(DxtSim[[i]], MyData$Lxt, MyData$QxtRef, AgeMethod, MyData$AgeRef, MyData$YearCom, MyData$YearRef)
+			QxtFittedSim[[i]] <- FctMethod1(DxtSim[[i]], MyData$Ext, MyData$QxtRef, AgeMethod, MyData$AgeRef, MyData$YearCom, MyData$YearRef)
 			}
 ## ---------- If Method 2
 		if(NameMethod == "Method2"){
-			QxtFittedSim[[i]] <- FctMethod2(DxtSim[[i]], MyData$Lxt, MyData$QxtRef, AgeMethod, MyData$AgeRef, MyData$YearCom, MyData$YearRef)
+			QxtFittedSim[[i]] <- FctMethod2(DxtSim[[i]], MyData$Ext, MyData$QxtRef, AgeMethod, MyData$AgeRef, MyData$YearCom, MyData$YearRef)
 		}
 ## ---------- If Method 3
 		if(NameMethod == "Method3"){
@@ -156,7 +156,7 @@ Dispersion = function(FinalMethod, MyData, Plot = F, Color = MyData$Param$Color,
 	DxtSim <- vector("list",length(MyData)-1)
 	names(DxtSim) <- names(MyData)[1:(length(MyData)-1)]
 	for (i in 1:(length(MyData)-1)){
-		DxtSim[[i]] <- .SimDxt(FinalMethod[[i]]$QxtFinal, MyData[[i]]$Lxt, AgeMethod, MyData[[i]]$AgeRef, MyData[[i]]$YearCom, NbSim)
+		DxtSim[[i]] <- .SimDxt(FinalMethod[[i]]$QxtFinal, MyData[[i]]$Ext, AgeMethod, MyData[[i]]$AgeRef, MyData[[i]]$YearCom, NbSim)
 		}
 	print("Fit of the simulated data ...")
 	QxtFinalSim <- vector("list",length(MyData)-1)
@@ -164,8 +164,8 @@ Dispersion = function(FinalMethod, MyData, Plot = F, Color = MyData$Param$Color,
 	for (i in 1:(length(MyData)-1)){
 		QxtFinalSim[[i]] <- .GetFitSim(DxtSim[[i]], MyData[[i]], AgeMethod, names(MyData)[i], FinalMethod[[1]]$NameMethod, NbSim, FinalMethod[[i]]$AgeRangeOpt, FinalMethod[[i]]$BegAgeComp, FinalMethod[[i]]$P.Opt, FinalMethod[[i]]$h.Opt)
 		}
+	AgeFinal <- as.numeric(rownames(FinalMethod[[1]]$QxtFinal))
 	if(Plot == T){
-		AgeFinal <- as.numeric(rownames(FinalMethod[[1]]$QxtFinal))
 		Path <- "Results/Graphics/Dispersion"
 		.CreateDirectory(paste("/",Path,sep=""))
 		print(paste("Create graphics of the fit of the simulated data in .../",Path," ...", sep=""))

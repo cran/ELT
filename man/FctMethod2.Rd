@@ -2,12 +2,12 @@
 \alias{FctMethod2}
 \title{FctMethod2 function}
 \usage{
-  FctMethod2(d, l, qref, x1, x2, t1, t2)
+  FctMethod2(d, e, qref, x1, x2, t1, t2)
 }
 \arguments{
   \item{d}{Number of deaths.}
 
-  \item{l}{Number of individuals under risk.}
+  \item{e}{Number of individuals under risk.}
 
   \item{qref}{Mortality rates in Reference Table.}
 

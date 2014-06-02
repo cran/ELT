@@ -6,7 +6,7 @@
 ## ------------------------------------------------------------------------ ##
 ##  Script        S08.R                                                     ##
 ## ------------------------------------------------------------------------ ##
-##  Description   criterion assessing the proximity between the observations ##
+##  Description   Criteria assessing the proximity between the observations ##
 ##                and the model                                             ##
 ## ------------------------------------------------------------------------ ##
 ##  Authors       Tomas Julien, Frederic Planchet and Wassim Youssef        ##
@@ -39,13 +39,10 @@
 		yy <-  y[AgeVec - min(as.numeric(rownames(y))) + 1, YearVec]
 		zz <- z[AgeVec - min(as.numeric(rownames(z))) + 1, YearVec]
 	## --- LR test
-		kk <- round(xx * zz, 5)
 		val.all <- matrix(, length(AgeVec), length(YearVec))
 		colnames(val.all) <- as.character(YearVec)
-		val.all[(yy > 0)] <- yy[(yy > 0)] * log(yy[(yy > 0)] / (xx[(yy > 0)] * zz[(yy > 0)])) + (zz[(yy > 0)] - yy[(yy > 0)]) * log((zz[(yy > 0)] - yy[(yy > 0)]) / (zz[(yy > 0)] - xx[(yy > 0)] * zz[(yy > 0)] ))
-		val.all[(yy == kk)] <- 0
-		val.all[(yy == 0)] <- 2 * zz[(yy == 0)] * log(zz[(yy == 0)] / (zz[(yy == 0)] - xx[(yy == 0)] * zz[(yy == 0)]))
-		val.all[(yy == zz)] <- 2 * zz[(yy == zz)] * log(zz[(yy == zz)]/(xx[(yy == zz)] * zz[(yy == zz)]))
+		val.all[(yy > 0)] <- 2 * yy[(yy > 0)] * log(yy[(yy > 0)] / (xx[(yy > 0)] * zz[(yy > 0)])) - (yy[(yy > 0)] - xx[(yy > 0)] * zz[(yy > 0)] )
+		val.all[(yy == 0)] <- 2 * xx[(yy == 0)] * zz[(yy == 0)]
 		xi.LR <- sum(val.all)
 		Threshold.LR <- qchisq(1 - vv, df = length(xx))
 		pval.LR <- 1 - pchisq(xi.LR, df = length(xx))
@@ -53,12 +50,12 @@
 		if(xi.LR <= Threshold.LR){ LRTEST[3, 1] <- "H0" } else { LRTEST[3, 1] <- "H1" }
 		LRTEST[4, 1] <- round(pval.LR, 4) 
 	## --- SMR test
-		d <- sum(yy); e <- sum(- zz * log(1 - xx))		
+		d <- sum(yy); e <- sum(zz * xx)
 		val.SMR <- d / e 
- 		if(val.SMR > 1){
- 		xi.SMR <- 3 * d^(1/2) * (1 - (9 * d)^(- 1) - (d / e)^(- 1 / 3)) }
+ 		if(val.SMR >= 1){
+ 		xi.SMR <- abs(3 * d^(1/2) * (1 - (9 * d)^(- 1) - (d / e)^(- 1 / 3))) }
  		if(val.SMR < 1){
-		xi.SMR <- 3 * (d + 1)^(1 / 2) * (((d + 1)/e)^(- 1 / 3) + (9 * (d + 1))^(- 1) - 1) }
+		xi.SMR <- abs(3 * (d + 1)^(1 / 2) * (((d + 1)/e)^(- 1 / 3) + (9 * (d + 1))^(- 1) - 1)) }
 		Threshold.SMR <- qnorm(1 - vv)
  		p.val.SMR <- 1 - pnorm(xi.SMR)
  		if(xi.SMR <= Threshold.SMR){ SMRTEST[4, 1] <- "H0" } else { SMRTEST[4,1] <- "H1" }
@@ -102,7 +99,7 @@
 ## ------------------------------------------------------------------------ ##
 
 .GetCritLevel1 = function(OutputMethod, MyData, ValCrit, AgeCrit){
-	CritLevel1 <- .TestsLevel1(OutputMethod$QxtFitted, MyData$Dxt, MyData$Lxt, ValCrit, AgeCrit, as.character(MyData$YearCom), OutputMethod$NameMethod)
+	CritLevel1 <- .TestsLevel1(OutputMethod$QxtFitted, MyData$Dxt, MyData$Ext, ValCrit, AgeCrit, as.character(MyData$YearCom), OutputMethod$NameMethod)
 	return(CritLevel1)
 	}
 
@@ -116,11 +113,8 @@
 		xx <- as.matrix(x)[AgeVec - min(as.numeric(rownames(x))) + 1, YearVec]
 		yy <-  as.matrix(y)[AgeVec - min(as.numeric(rownames(y))) + 1, YearVec]
 		zz <- as.matrix(z)[AgeVec - min(as.numeric(rownames(z))) + 1, YearVec]
-		kk <- round(xx * zz, 5)
-		DevMat[(yy > 0)] <- 2 * (yy[(yy > 0)] * log(yy[(yy > 0)] / (xx[(yy > 0)] * zz[(yy > 0)] ) ) + (zz[(yy > 0)] - yy[(yy > 0)]) * log((zz[(yy > 0)] - yy[(yy > 0)]) / (zz[(yy > 0)] - xx[(yy > 0)] * zz[(yy > 0)] )))
-		DevMat[(yy == kk)] <- 0
-		DevMat[(yy == zz)] <- 2 * zz[(yy == zz)] * log(zz[(yy == zz)] / (xx[(yy == zz)] * zz[(yy == zz)]))
-		DevMat[(yy == 0)] <- 2 *zz[(yy == 0)] * log(zz[(yy == 0)]/(zz[(yy == 0)] - xx[(yy == 0)] * zz[(yy == 0)]))
+		DevMat[(yy > 0)] <- 2 * (yy[(yy > 0)] * log(yy[(yy > 0)] / (xx[(yy > 0)] * zz[(yy > 0)])) - (yy[(yy > 0)] - xx[(yy > 0)] * zz[(yy > 0)] ))
+		DevMat[(yy == 0)] <- 2 * xx[(yy == 0)] * zz[(yy == 0)]
 	return(DevMat) }
 
 ## ------------------------------------------------------------------------ ##
@@ -147,8 +141,8 @@
 ##  Nber of deaths and pointwise confidence intervals                       ##
 ## ------------------------------------------------------------------------ ##
 	
-.FittedDxtAndConfInt = function(q, l, x1, t1, ValCrit, NameMethod){
-	DxtFitted <- as.matrix(q[x1 - min(as.numeric(rownames(q))) + 1, as.character(t1)] * l[x1 - min(as.numeric(rownames(l))) + 1, as.character(t1)])
+.FittedDxtAndConfInt = function(q, e, x1, t1, ValCrit, NameMethod){
+	DxtFitted <- as.matrix(q[x1 - min(as.numeric(rownames(q))) + 1, as.character(t1)] * e[x1 - min(as.numeric(rownames(e))) + 1, as.character(t1)])
 	DIntUp <- as.matrix(DxtFitted + qnorm(1 - ValCrit / 2) * sqrt(DxtFitted * (1 - q[x1 - min(as.numeric(rownames(q))) + 1, as.character(t1)])))
 	DIntLow <- as.matrix(DxtFitted - qnorm(1 - ValCrit / 2) * sqrt(DxtFitted * (1 - q[x1 - min(as.numeric(rownames(q))) + 1, as.character(t1)])))
 	DIntLow[DIntLow < 0 ] <- 0
@@ -164,17 +158,17 @@
 
 
 ValidationLevel1 = function(OutputMethod, MyData, ValCrit, AgeCrit, Plot = F, Color = MyData$Param$Color, Excel = F){
-	print("Validation: Level 1 - criterion assessing the proximity between the observations and the model ...")
+	print("Validation: Level 1 - Criteria assessing the proximity between the observations and the model ...")
 	CritLevel1 <- Residuals <- DeathsIntConf <- vector("list", length(MyData)-1)
 	names(CritLevel1) <- names(Residuals) <- names(DeathsIntConf) <- names(MyData)[1:(length(MyData)-1)]
 	for (i in 1 : (length(MyData)-1)){
-		.WarningInvalidAge(MyData[[i]]$Dxt, MyData[[i]]$Lxt, AgeCrit, MyData[[i]]$AgeRef, MyData[[i]]$YearCom)
+		.WarningInvalidAge(MyData[[i]]$Dxt, MyData[[i]]$Ext, AgeCrit, MyData[[i]]$AgeRef, MyData[[i]]$YearCom)
 		print(paste("Tests & quantities for ",names(MyData)[i]," population ..."))
 		CritLevel1[[i]] <- .GetCritLevel1(OutputMethod[[i]], MyData[[i]], ValCrit, AgeCrit)
 		print(CritLevel1[[i]])
-		Dev <- .DevFct(OutputMethod[[i]]$QxtFitted, MyData[[i]]$Dxt, MyData[[i]]$Lxt, AgeCrit, as.character(MyData[[i]]$YearCom))
-		Residuals[[i]] <- .ResFct(OutputMethod[[i]]$QxtFitted, MyData[[i]]$Dxt, MyData[[i]]$Lxt, AgeCrit, as.character(MyData[[i]]$YearCom), Dev, OutputMethod[[i]]$NameMethod)
-		DeathsIntConf[[i]] <- .FittedDxtAndConfInt(OutputMethod[[i]]$QxtFitted, MyData[[i]]$Lxt, AgeCrit, MyData[[i]]$YearCom, ValCrit, OutputMethod[[i]]$NameMethod)
+		Dev <- .DevFct(OutputMethod[[i]]$QxtFitted, MyData[[i]]$Dxt, MyData[[i]]$Ext, AgeCrit, as.character(MyData[[i]]$YearCom))
+		Residuals[[i]] <- .ResFct(OutputMethod[[i]]$QxtFitted, MyData[[i]]$Dxt, MyData[[i]]$Ext, AgeCrit, as.character(MyData[[i]]$YearCom), Dev, OutputMethod[[i]]$NameMethod)
+		DeathsIntConf[[i]] <- .FittedDxtAndConfInt(OutputMethod[[i]]$QxtFitted, MyData[[i]]$Ext, AgeCrit, MyData[[i]]$YearCom, ValCrit, OutputMethod[[i]]$NameMethod)
 		}
 	if(Excel == T){
 		.ExportValidationL1inExcel(CritLevel1)

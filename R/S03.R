@@ -22,9 +22,8 @@
 ## ---------- Supress SMR == 0 and is.na(SMR) == T, take the mean
 
 
-FctMethod1 = function(d, l, qref, x1, x2, t1, t2){
-	SMRxt <- as.vector(d[x1 - min(as.numeric(rownames(d))) + 1,] / - (l[x1 - min(as.numeric(rownames(l))) + 1,] * log(1 - qref[x1 - min(x2) + 1, as.character(t1)])))
-	SMR <- mean(SMRxt[SMRxt != 0 & is.na(SMRxt) == F & SMRxt != Inf])
+FctMethod1 = function(d, e, qref, x1, x2, t1, t2){
+	SMR <- sum(d[x1 - min(as.numeric(rownames(d))) + 1,]) / sum(e[x1 - min(as.numeric(rownames(e))) + 1,] * qref[x1 - min(x2) + 1, as.character(t1)])
 	QxtFitted <- SMR * qref[, as.character(min(t1) : max(t2))]
 	colnames(QxtFitted) <- min(t1) : max(t2)
 	rownames(QxtFitted) <- x2
@@ -43,8 +42,8 @@ Method1 = function(MyData, AgeRange, Plot = F, Color = MyData$Param$Color){
 	print("Execute method 1 ...")
 	print("Compute the SMR ...")
 	for (i in 1 : (length(MyData)-1)){
-		.WarningInvalidAge(MyData[[i]]$Dxt, MyData[[i]]$Lxt, AgeRange, MyData[[i]]$AgeRef, MyData[[i]]$YearCom)
-		M1[[i]] <- FctMethod1(MyData[[i]]$Dxt, MyData[[i]]$Lxt, MyData[[i]]$QxtRef, AgeRange, MyData[[i]]$AgeRef, MyData[[i]]$YearCom, MyData[[i]]$YearRef)
+		.WarningInvalidAge(MyData[[i]]$Dxt, MyData[[i]]$Ext, AgeRange, MyData[[i]]$AgeRef, MyData[[i]]$YearCom)
+		M1[[i]] <- FctMethod1(MyData[[i]]$Dxt, MyData[[i]]$Ext, MyData[[i]]$QxtRef, AgeRange, MyData[[i]]$AgeRef, MyData[[i]]$YearCom, MyData[[i]]$YearRef)
 		print(paste("QxtFitted", names(MyData)[i]," = ",M1[[i]]$SMR," * QxtRef", names(MyData)[i], sep = ""))
 		M1[[i]]=c(M1[[i]],list(AgeMethod=AgeRange))
 		}
