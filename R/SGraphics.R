@@ -192,8 +192,7 @@ k1 <- draw.key(list(lines = list(pch = Pch, lty = Lty, type = "b", col = Color),
 text = list(lab = NameObs), draw=TRUE))
 pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"),
                  width = unit(1, "grobwidth", k1), 
-                 height = unit(1, "grobheight", k1), 
-                 just=c("left", "bottom")))
+                 height = unit(1, "grobheight", k1)))
                  grid.draw(k1);
 	 }
 
@@ -221,7 +220,7 @@ pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"),
 	panel.points(AgeVec, x[AgeVec+1-min(as.numeric(rownames(x))),yy], type="l", col=ColVec, lty = 1)
 	trellis.unfocus()
 	k1 <- draw.key(list(lines = list( type = c("p","l"), pch=16, col = c(1,ColVec), lty = 1), cex = .9, text = list(lab = c("Observations", NameMethod)), draw=TRUE))
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1)))
 	grid.draw(k1)
 	}
 
@@ -254,7 +253,7 @@ pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"),
 	panel.points(AgeVec, log(x[AgeVec+1-min(as.numeric(rownames(x))),yy]), type="l", col=ColVec, lty = 1)
 	trellis.unfocus()
 k1 <- draw.key(list(lines = list( type = c("p","l"), pch=16, col = c(1,ColVec), lty = 1), cex = .9, text = list(lab = c("Observations", NameMethod)), draw=TRUE))
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1)))
 	grid.draw(k1)
 	}
 
@@ -346,7 +345,7 @@ print(useOuterStrips(zzz,
 		panel.points(AgeVec, d$DIntLow[AgeVec+1-min(as.numeric(rownames(d$DIntLow))),yy], type="l", col=ColVec, lty = 3)
 	trellis.unfocus()
 k1 <- draw.key(list(lines = list( type = c("p","l"), pch=16, col = c(1,ColVec), lty = 1), cex = .9, text = list(lab = c("Observations", d$NameMethod)), draw=TRUE))
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1)))
 	grid.draw(k1)
 	}
 
@@ -373,7 +372,7 @@ k1 <- draw.key(list(lines = list( type = c("p","l"), pch=16, col = c(1,ColVec), 
 	trellis.unfocus()
 k1 <- draw.key(list(lines = list( type = c("b","l"), pch=16, col = c(1,col.vec), lty = c(2,1)), cex = .9, text = list(lab = c("Observations", leg.vec)), draw=TRUE))
 
-pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
+pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1)))
 
 grid.draw(k1) }
 
@@ -487,7 +486,7 @@ type = "n", xlab = 'Age', ylab = "", layout=LayOut, par.settings = list(fontsize
 		trellis.unfocus()
 		k1 <- draw.key(list(lines = list( type = "b", pch=ppp, col = cc, lty = 2, cex=1.5), cex = 1.1, text = list(lab = paste("Age", av)), draw=TRUE))
 
-pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
+pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1)))
 
 grid.draw(k1) }
 
@@ -549,7 +548,7 @@ grid.draw(k1) }
 		}
 	trellis.unfocus()
 	k1 <- draw.key(list(lines = list( type = c("p",rep("l",length(x))), pch=16, col = c(1,col.vec), lty = c(NA,lty.vec)), cex = .9, text = list(lab = c("Observations", leg.vec)), draw=TRUE))
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1)))
 	grid.draw(k1)
 	}
 
@@ -612,7 +611,7 @@ grid.draw(k1) }
 		}
 	trellis.unfocus()
 	k1 <- draw.key(list(lines = list( type = c("p",rep("l",length(x))), pch=16, col = c(1,col.vec), lty = c(NA, lty.vec)), cex = .9, text = list(lab = c("Observations", leg.vec)), draw=TRUE))
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1)))
 	grid.draw(k1)
 	}
 
@@ -767,7 +766,7 @@ x = list(relation = "same", alternating = 1, tck = c(1,0), at = seq(min(xx),max(
 		}
 	trellis.unfocus()
 	k1 <- draw.key(list(lines = list( type = c("p",rep("l",length(x))), pch=16, col = c(1,col.vec), lty = c(NA, lty.vec)), cex = .9, text = list(lab = c("Observations", leg.vec)), draw=TRUE)) }
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1)))
 	grid.draw(k1) 
 	}
 
@@ -853,6 +852,6 @@ x = list(relation = "same", alternating = 1, tck = c(1,0), at = seq(min(xx),max(
 	trellis.unfocus()
 	k1 <- draw.key(list(lines = list( type = c("b",rep("l",length(x2))), pch=16, col = c(gray(.5),col.vec), lty = c(2,lty.vec)), cex = .9, text = list(lab = c("Observations", leg.vec)), draw=TRUE))
 	}
-	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1), just=c("left", "bottom")))
+	pushViewport(viewport(x = unit(k[1], "mm"), y = unit(k[2], "mm"), width = unit(1, "grobwidth", k1), height = unit(1, "grobheight", k1)))
 	grid.draw(k1)
 	}
