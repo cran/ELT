@@ -12,10 +12,10 @@ Collection of functions that can be used following a pre-established procedure t
 \tabular{ll}{
 Package: \tab ELT\cr
 Type: \tab Package\cr
-Version: \tab 1.3\cr
-Date: \tab 2014-08-03\cr
+Version: \tab 1.4\cr
+Date: \tab 2015-09-03\cr
 License: \tab GNU\cr
-Depends: \tab locfit,lattice,latticeExtra,grid,xlsx\cr
+Depends: \tab locfit,lattice,latticeExtra,xlsx\cr
 }
 
 The package is meant to be used following a pre-established procedure.
@@ -26,7 +26,7 @@ See the reference for more info.
 
 Please notice that the package includes the following internal functions:
 
-.BeforeAfterCompletion(); .ComparisonFitsMethods(); .ComparisonFitsMethodsLog(); .ComparisonResidualsMethods(); .ComparisonResidualsMethods(); .ComparisonTrendsMethods(); .CompletionDG2005(); .CompLevel1(); .CompLevel2(); .CompLevel3(); .DevFct(); .ExportHistoryInExcel(); .ExportPeriodicLifeExpinExcel(); .ExportSingleIndiciesinExcel(); .ExportValidationL1inExcel(); .ExportValidationL2inExcel(); .FctCohortLifeExp5(); .FctPerLifeExp(); .FctSingleIndices(); .FitPopsAfterCompletionLog(); .FittedDxtAndConfInt(); .GetCritLevel1(); .GetCritLevel2(); .GetCV(); .GetFitSim(); .GetHistory(); .GetQtiles(); .GetRelDisp(); .GetSimExp(); .PlotCrit(); .PlotCritChoice(); .PlotDIntConf(); .PlotExpQtle(); .PlotFittedYear(); .PlotFittedYearLog(); .PlotMethod(); .PlotParamCompletion(); .PlotPerExp(); .PlotRelDisp(); .PlotRes(); .ResFct(); .SimDxt(); .ValidationLevel3() .
+.BeforeAfterCompletion(); .ComparisonFitsMethods(); .ComparisonFitsMethodsLog(); .ComparisonResidualsMethods(); .ComparisonResidualsMethods(); .ComparisonTrendsMethods(); .CompletionDG2005(); .CompLevel1(); .CompLevel2(); .CompLevel3(); .DevFct(); .ExportHistoryInExcel(); .ExportPeriodicLifeExpinExcel(); .ExportSingleIndiciesinExcel(); .ExportValidationL1inExcel(); .ExportValidationL2inExcel(); .FctCohortLifeExp5(); .FctPerLifeExp(); .FctSingleIndices(); .FitPopsAfterCompletionLog(); .FittedDxtAndConfInt(); .GetCritLevel1(); .GetCritLevel2(); .GetCV(); .GetFitSim(); .GetHistory(); .GetQtiles(); .GetRelDisp(); .GetSimExp(); .PlotCrit(); .PlotCritChoice(); .PlotDIntConf(); .PlotExpQtle(); .PlotFittedYear(); .PlotFittedYearLog(); .PlotMethod(); .PlotParamCompletion(); .PlotPerExp(); .PlotRelDisp(); .PlotRes(); .ResFct(); .SimDxt(); .ValidationLevel3(); .WarningInvalidAge() .
 
 These functions can be accessed with the prefix ELT::: using the following syntax: ELT:::[name of the function] . For example : ELT:::.GetHistory(). See technical note II1291-15 (http://www.ressources-actuarielles.net/gtmortalite) for the arguments and examples of the functions.
 
