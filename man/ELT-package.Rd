@@ -12,8 +12,8 @@ Collection of functions that can be used following a pre-established procedure t
 \tabular{ll}{
 Package: \tab ELT\cr
 Type: \tab Package\cr
-Version: \tab 1.4\cr
-Date: \tab 2015-09-03\cr
+Version: \tab 1.5\cr
+Date: \tab 2015-03-20\cr
 License: \tab GNU\cr
 Depends: \tab locfit,lattice,latticeExtra,xlsx\cr
 }
