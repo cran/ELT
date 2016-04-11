@@ -75,7 +75,7 @@
 	if (nrow(t_out)>0) {
 		AgeInExpoS <- pmax(t_out$AgeIn, difftime(DateBeg, t_out$DateOfBirth, "", "days") / NbDaysYear)
 		AgeOutExpoS <- pmin(t_out$AgeOut, difftime(DateEnd, t_out$DateOfBirth, "", "days") / NbDaysYear)
-                if (AgeOutExpoS >trunc(AgeOutExpoS )){AgeOutExpoS =trunc(AgeOutExpoS )+1} 
+                AgeOutExpoS = trunc(AgeOutExpoS )+((AgeOutExpoS -trunc(AgeOutExpoS ))>0)*1
 		for (x in 0:120){ Expo[x + 1] <- Expo[x + 1] + sum(pmax(0, pmin(x + 1, AgeOutExpoS) - pmax(x, AgeInExpoS))) } }
 		return(Expo)
 	}
